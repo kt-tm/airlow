@@ -69,7 +69,7 @@ with DAG(
     # Чтение, агрегация стоимости по классу
     mean_fares_titanic_dataset = PythonOperator(
         task_id='mean_fare_per_class',
-        python_callable=pivot_dataset,
+        python_callable=mean_fare_per_class,
         dag=dag,
     )
 
@@ -80,4 +80,4 @@ with DAG(
         dag=dag,
     )
     # Порядок выполнения тасок
-    first_task >> create_titanic_dataset >> {pivot_titanic_dataset, mean_fares_titanic_dataset} >> last_task
+    first_task >> create_titanic_dataset >> (pivot_titanic_dataset, mean_fares_titanic_dataset) >> last_task
